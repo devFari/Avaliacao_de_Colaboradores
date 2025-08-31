@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Colaboradores</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="index.html" class="back-button">Voltar</a>
+    
+    <div class="container">
+
+        <h1>Cadastro de Colaboradores</h1>
+
+        <form>
+            <div class="form-group">
+                <label for="matricula">Matrícula</label>
+                <input type="text" id="matricula" name="matricula">
+            </div>
+
+            <div class="form-group">
+                <label for="nome_colaborador">Nome colaborador</label>
+                <input type="text" id="nome_colaborador" name="nome_colaborador">
+            </div>
+
+            <div class="form-group">
+                <label for="condicao">Condição</label>
+                <select id="condicao" name="condicao">
+                    <option value="situação" selected>escolha</option>
+                    <option value="ativo">Ativo</option>
+                    <option value="desligado">Desligado</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cargo">Cargo</label>
+                <input type="text" id="cargo" name="cargo">
+            </div>
+
+            <div class="form-group">
+                <label for="setor">Setor</label>
+                <input type="text" id="setor" name="setor">
+            </div>
+
+            <div class="form-group">
+                <label for="unidade">Unidade</label>
+                <input type="text" id="unidade" name="unidade">
+            </div>
+
+            <button type="submit">Salvar</button>
+        </form>
+
+    </div>
+
+    <div class="footer">
+        Product by <a href="https://www.linkedin.com/in/matheus-henrique-gpti/" target="_blank">DevFari</a>
+    </div>
+
+    <script>
+        const formColaborador = document.querySelector('form');
+
+        formColaborador.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(formColaborador);
+            const colaborador = Object.fromEntries(formData.entries());
+
+            // Adiciona um ID único para o novo colaborador
+            colaborador.id = Date.now();
+
+            try {
+                const response = await fetch('/salvar-colaborador', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(colaborador)
+                });
+
+                if (response.ok) {
+                    alert('Colaborador salvo com sucesso!');
+                    formColaborador.reset();
+                } else {
+                    alert('Erro ao salvar o colaborador.');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro de conexão com o servidor.');
+            }
+        });
+    </script>
+
+</body>
+</html>

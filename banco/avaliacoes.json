@@ -1,0 +1,28 @@
+[
+  {
+    "id_avaliacao": "ID gerado automaticamente",
+    "avaliador": "Bruno Chagas",
+    "matricula_colaborador": "001322",
+    "ano_referencia": "2025",
+    "data_avaliacao": "2025-08-28",
+    "competencia_01": "3",
+    "competencia_02": "1",
+    "competencia_03": "2",
+    "competencia_04": "0",
+    "competencia_05": "3",
+    "id": 1756656394658
+  },
+  {
+    "id_avaliacao": "ID gerado automaticamente",
+    "avaliador": "Bruno Chagas",
+    "matricula_colaborador": "001333",
+    "ano_referencia": "2025",
+    "data_avaliacao": "2025-08-28",
+    "competencia_01": "1",
+    "competencia_02": "2",
+    "competencia_03": "0",
+    "competencia_04": "3",
+    "competencia_05": "1",
+    "id": 1756656684628
+  }
+]

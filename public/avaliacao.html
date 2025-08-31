@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação de Competências</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <a href="index.html" class="back-button">Voltar</a>
+
+    <div class="container">
+        
+        <h1>Avaliação de Competências</h1>
+
+        <form>
+            <div class="form-group">
+                <label for="id_avaliacao">ID da Avaliação</label>
+                <input type="text" id="id_avaliacao" name="id_avaliacao" value="ID gerado automaticamente" class="readonly-field" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="avaliador">Avaliador</label>
+                <input type="text" id="avaliador" name="avaliador">
+            </div>
+
+            <div class="form-group">
+                <label for="matricula_colaborador">Matrícula Colaborador</label>
+                <input type="text" id="matricula_colaborador" name="matricula_colaborador">
+            </div>
+
+            <div class="form-group">
+                <label for="ano_referencia">Ano de Referência</label>
+                <input type="text" id="ano_referencia" name="ano_referencia" placeholder="Ex: 2025" maxlength="4">
+            </div>
+
+            <div class="form-group">
+                <label for="data_avaliacao">Data da Avaliação</label>
+                <input type="date" id="data_avaliacao" name="data_avaliacao">
+            </div>
+
+            <div class="form-group">
+                <label for="competencia_01">Competência 01</label>
+                <select id="competencia_01" name="competencia_01">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="competencia_02">Competência 02</label>
+                <select id="competencia_02" name="competencia_02">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="competencia_03">Competência 03</label>
+                <select id="competencia_03" name="competencia_03">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="competencia_04">Competência 04</label>
+                <select id="competencia_04" name="competencia_04">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="competencia_05">Competência 05</label>
+                <select id="competencia_05" name="competencia_05">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+
+            <button type="submit">Salvar Avaliação</button>
+        </form>
+    </div>
+
+    <div class="footer">
+        Product by <a href="https://www.linkedin.com/in/matheus-henrique-gpti/" target="_blank">DevFari</a>
+    </div>
+
+    <script>
+        const formAvaliacao = document.querySelector('form');
+
+        formAvaliacao.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(formAvaliacao);
+            const avaliacao = Object.fromEntries(formData.entries());
+
+            // Adiciona um ID único para a nova avaliação
+            avaliacao.id = Date.now();
+
+            try {
+                const response = await fetch('/salvar-avaliacao', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(avaliacao)
+                });
+
+                if (response.ok) {
+                    alert('Avaliação salva com sucesso!');
+                    formAvaliacao.reset();
+                } else {
+                    alert('Erro ao salvar a avaliação.');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro de conexão com o servidor.');
+            }
+        });
+    </script>
+
+</body>
+</html>

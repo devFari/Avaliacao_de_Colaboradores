@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Visualização de Avaliações</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Visualização de Avaliações</h1>
+
+  <a href="index.html" class="back-button">Voltar</a>
+
+  <div class="filtros">
+    <div class="campo">
+        <label class="label" for="filtro-colaborador">Colaborador</label>
+        <input id="filtro-colaborador" type="text" placeholder="Buscar por colaborador" aria-label="Buscar por colaborador" />
+    </div>
+    <div class="campo">
+        <label class="label" for="filtro-ano">Ano de Referência</label>
+        <input id="filtro-ano" type="text" placeholder="Buscar por ano" aria-label="Buscar por ano" />
+    </div>
+    <div class="campo">
+        <label class="label" for="filtro-setor">Setor</label>
+        <input id="filtro-setor" type="text" placeholder="Buscar por setor" aria-label="Buscar por setor" />
+    </div>
+    <div class="campo">
+        <label class="label" for="filtro-unidade">Unidade</label>
+        <input id="filtro-unidade" type="text" placeholder="Buscar por unidade" aria-label="Buscar por unidade" />
+    </div>
+  </div>
+
+  <div id="lista" class="main-content">
+      </div>
+  
+  <div id="nenhum" class="hidden">Nenhuma avaliação encontrada.</div>
+
+  <template id="modelo-card">
+    <div class="card">
+        <div class="campo">
+            <p class="label">Colaborador</p>
+            <p class="valor colaborador"></p>
+        </div>
+        <div class="campo">
+            <p class="label">Avaliador</p>
+            <p class="valor avaliador"></p>
+        </div>
+        <div class="campo">
+            <p class="label">Ano</p>
+            <p class="valor ano"></p>
+        </div>
+        <div class="campo">
+            <p class="label">Data</p>
+            <p class="valor data"></p>
+        </div>
+        <hr>
+        <div class="competencias-grid">
+            <div class="campo">
+                <p class="label">Competência 01</p>
+                <p class="valor comp01"></p>
+            </div>
+            <div class="campo">
+                <p class="label">Competência 02</p>
+                <p class="valor comp02"></p>
+            </div>
+            <div class="campo">
+                <p class="label">Competência 03</p>
+                <p class="valor comp03"></p>
+            </div>
+            <div class="campo">
+                <p class="label">Competência 04</p>
+                <p class="valor comp04"></p>
+            </div>
+            <div class="campo">
+                <p class="label">Competência 05</p>
+                <p class="valor comp05"></p>
+            </div>
+        </div>
+    </div>
+  </template>
+
+    <div class="footer">
+        Product by <a href="https://www.linkedin.com/in/matheus-henrique-gpti/" target="_blank">DevFari</a>
+    </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const listaDiv = document.getElementById('lista');
+        const nenhumDiv = document.getElementById('nenhum');
+        const templateCard = document.getElementById('modelo-card');
+
+        // Referências aos inputs de filtro
+        const filtroColaborador = document.getElementById('filtro-colaborador');
+        const filtroAno = document.getElementById('filtro-ano');
+        const filtroSetor = document.getElementById('filtro-setor');
+        const filtroUnidade = document.getElementById('filtro-unidade');
+        
+        let avaliacoes = [];
+        let colaboradores = [];
+
+        // Função para buscar os dados do servidor
+        async function fetchData() {
+            try {
+                const [avaliacoesResponse, colaboradoresResponse] = await Promise.all([
+                    fetch('/avaliacoes'),
+                    fetch('/colaboradores')
+                ]);
+
+                if (avaliacoesResponse.ok && colaboradoresResponse.ok) {
+                    avaliacoes = await avaliacoesResponse.json();
+                    colaboradores = await colaboradoresResponse.json();
+                    renderCards();
+                } else {
+                    console.error('Erro ao buscar dados do servidor.');
+                    nenhumDiv.textContent = 'Erro ao carregar dados.';
+                    nenhumDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Erro de conexão:', error);
+                nenhumDiv.textContent = 'Erro de conexão com o servidor.';
+                nenhumDiv.classList.remove('hidden');
+            }
+        }
+
+        // Função para renderizar os cartões na tela
+        function renderCards() {
+            const termoColaborador = filtroColaborador.value.toLowerCase();
+            const termoAno = filtroAno.value.toLowerCase();
+            const termoSetor = filtroSetor.value.toLowerCase();
+            const termoUnidade = filtroUnidade.value.toLowerCase();
+
+            listaDiv.innerHTML = ''; // Limpa os cartões existentes
+            nenhumDiv.classList.add('hidden');
+
+            const avaliacoesFiltradas = avaliacoes.filter(avaliacao => {
+                // Encontra o colaborador correspondente à avaliação
+                const colaborador = colaboradores.find(c => c.matricula == avaliacao.matricula_colaborador);
+
+                // Aplica os filtros
+                const matchColaborador = !termoColaborador || (colaborador && colaborador.nome_colaborador.toLowerCase().includes(termoColaborador));
+                const matchAno = !termoAno || (avaliacao.ano_referencia.toString().toLowerCase().includes(termoAno));
+                const matchSetor = !termoSetor || (colaborador && colaborador.setor.toLowerCase().includes(termoSetor));
+                const matchUnidade = !termoUnidade || (colaborador && colaborador.unidade.toLowerCase().includes(termoUnidade));
+
+                return matchColaborador && matchAno && matchSetor && matchUnidade;
+            });
+
+            if (avaliacoesFiltradas.length > 0) {
+                avaliacoesFiltradas.forEach(avaliacao => {
+                    // Obtém a referência ao template
+                    const cardClone = document.importNode(templateCard.content, true);
+                    const card = cardClone.querySelector('.card');
+
+                    // Encontra o colaborador correspondente para obter nome, setor e unidade
+                    const colaborador = colaboradores.find(c => c.matricula == avaliacao.matricula_colaborador);
+                    const nomeColaborador = colaborador ? colaborador.nome_colaborador : 'Desconhecido';
+                    const setorColaborador = colaborador ? colaborador.setor : 'Desconhecido';
+                    const unidadeColaborador = colaborador ? colaborador.unidade : 'Desconhecido';
+
+                    // Preenche os dados do card
+                    card.querySelector('.colaborador').textContent = nomeColaborador;
+                    card.querySelector('.avaliador').textContent = avaliacao.avaliador;
+                    card.querySelector('.ano').textContent = avaliacao.ano_referencia;
+                    card.querySelector('.data').textContent = avaliacao.data_da_avaliacao;
+                    card.querySelector('.comp01').textContent = avaliacao.competencia_01;
+                    card.querySelector('.comp02').textContent = avaliacao.competencia_02;
+                    card.querySelector('.comp03').textContent = avaliacao.competencia_03;
+                    card.querySelector('.comp04').textContent = avaliacao.competencia_04;
+                    card.querySelector('.comp05').textContent = avaliacao.competencia_05;
+
+                    listaDiv.appendChild(cardClone);
+                });
+            } else {
+                nenhumDiv.classList.remove('hidden');
+            }
+        }
+
+        // Adiciona event listeners para os campos de filtro
+        filtroColaborador.addEventListener('input', renderCards);
+        filtroAno.addEventListener('input', renderCards);
+        filtroSetor.addEventListener('input', renderCards);
+        filtroUnidade.addEventListener('input', renderCards);
+
+        // Adiciona um estilo para o "Nenhuma avaliação encontrada" quando está escondido
+        const style = document.createElement('style');
+        style.innerHTML = '.hidden { display: none; }';
+        document.head.appendChild(style);
+
+        // Carrega os dados na inicialização da página
+        fetchData();
+    });
+  </script>
+
+</body>
+</html>
