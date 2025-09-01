@@ -16,5 +16,14 @@
     "setor": "TI",
     "unidade": "Matris",
     "foto": "/uploads/001333.png"
+  },
+  {
+    "matricula": "001335",
+    "nome_colaborador": "ssssss",
+    "condicao": "ativo",
+    "cargo": "assistente",
+    "setor": "recepção",
+    "unidade": "centro",
+    "foto": "/uploads/1335.png"
   }
 ]

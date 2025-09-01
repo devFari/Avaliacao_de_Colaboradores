@@ -32,5 +32,18 @@
     "grupo-competencias": "TI",
     "comp06": "1",
     "data_da_avaliacao": "01/09/2025"
+  },
+  {
+    "id_avaliacao": "ID gerado automaticamente",
+    "avaliador": "Bruno",
+    "matricula_colaborador": "001335",
+    "ano_referencia": "2025",
+    "data_avaliacao": "2025-07-29",
+    "competencia_01": "2",
+    "competencia_02": "2",
+    "competencia_03": "1",
+    "competencia_04": "3",
+    "competencia_05": "3",
+    "id": 1756754828355
   }
 ]
