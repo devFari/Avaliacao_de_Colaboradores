@@ -65,7 +65,7 @@ h1 {
 }
 
 .main-menu button {
-    width: 100%;
+    width: 350px;
     padding: 15px 20px;
     background-color: #007aff;
     color: #ffffff;
@@ -302,4 +302,53 @@ hr {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+}
+
+/* Estilos da página de desempenho (desempenho.html) */
+.search-form {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    align-items: flex-end;
+}
+
+.search-form .form-group {
+    margin-bottom: 0;
+}
+
+.search-form button {
+    height: 40px;
+    padding: 0 20px;
+    white-space: nowrap;
+}
+
+.desempenho-card {
+    border: 1px solid #e0e0e0;
+    max-width: 600px;
+}
+
+.desempenho-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.desempenho-card .dados-basicos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#media-ponderada {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #007aff;
+    margin-top: 5px;
+}
+
+#nenhum-resultado {
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+    margin-top: 40px;
 }

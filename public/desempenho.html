@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desempenho do Colaborador</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-button">Voltar</a>
+    <h1>Desempenho do Colaborador</h1>
+
+    <div class="search-form">
+        <div class="form-group">
+            <label for="matricula-filtro">Matrícula</label>
+            <input type="text" id="matricula-filtro" placeholder="Matrícula do Colaborador">
+        </div>
+        <div class="form-group">
+            <label for="ano-filtro">Ano de Referência</label>
+            <input type="text" id="ano-filtro" placeholder="Ano (ex: 2025)">
+        </div>
+        <button id="buscar-desempenho">Buscar Desempenho</button>
+    </div>
+
+    <div id="desempenho-resultado" class="hidden">
+        <div class="card desempenho-card">
+            <div class="card-header">
+                <img class="foto-colaborador" src="" alt="Foto do Colaborador" id="foto-desempenho">
+                <div class="dados-basicos">
+                    <div class="campo">
+                        <p class="label">Colaborador</p>
+                        <p class="valor" id="nome-colaborador"></p>
+                    </div>
+                    <div class="campo">
+                        <p class="label">Média do Colaborador</p>
+                        <p class="valor" id="media-ponderada"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="nenhum-resultado" class="hidden">
+        <p>Nenhum resultado encontrado. Verifique a matrícula ou o ano de referência.</p>
+    </div>
+</div>
+
+    <div class="footer">
+        Product by <a href="https://www.linkedin.com/in/matheus-henrique-gpti/" target="_blank">DevFari</a>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const matriculaFiltro = document.getElementById('matricula-filtro');
+        const anoFiltro = document.getElementById('ano-filtro');
+        const buscarBotao = document.getElementById('buscar-desempenho');
+        const resultadoDiv = document.getElementById('desempenho-resultado');
+        const nenhumResultadoDiv = document.getElementById('nenhum-resultado');
+        const nomeColaboradorP = document.getElementById('nome-colaborador');
+        const fotoColaboradorImg = document.getElementById('foto-desempenho');
+        const mediaPonderadaP = document.getElementById('media-ponderada');
+
+        let avaliacoes = [];
+        let colaboradores = [];
+
+        async function fetchData() {
+            try {
+                const [avaliacoesResponse, colaboradoresResponse] = await Promise.all([
+                    fetch('/avaliacoes'),
+                    fetch('/colaboradores')
+                ]);
+                avaliacoes = await avaliacoesResponse.json();
+                colaboradores = await colaboradoresResponse.json();
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                nenhumResultadoDiv.textContent = 'Erro ao carregar dados do servidor.';
+                nenhumResultadoDiv.classList.remove('hidden');
+            }
+        }
+
+        function calcularMedia(notas) {
+            if (notas.length === 0) return 'N/A';
+            const soma = notas.reduce((total, nota) => total + parseInt(nota), 0);
+            return (soma / notas.length).toFixed(2);
+        }
+
+        buscarBotao.addEventListener('click', () => {
+            const matricula = matriculaFiltro.value;
+            const ano = anoFiltro.value;
+
+            resultadoDiv.classList.add('hidden');
+            nenhumResultadoDiv.classList.add('hidden');
+
+            const avaliacoesFiltradas = avaliacoes.filter(av => 
+                av.matricula_colaborador == matricula && av.ano_referencia == ano
+            );
+
+            if (avaliacoesFiltradas.length > 0) {
+                const notas = [];
+                avaliacoesFiltradas.forEach(av => {
+                    notas.push(av.competencia_01, av.competencia_02, av.competencia_03, av.competencia_04, av.competencia_05);
+                });
+                
+                const media = calcularMedia(notas);
+                const colaborador = colaboradores.find(c => c.matricula == matricula);
+
+                if (colaborador) {
+                    nomeColaboradorP.textContent = colaborador.nome_colaborador;
+                    const fotoPath = colaborador.foto ? colaborador.foto : '/uploads/default_user.png';
+                    fotoColaboradorImg.src = fotoPath;
+                } else {
+                    nomeColaboradorP.textContent = 'Colaborador não encontrado';
+                    fotoColaboradorImg.src = '/uploads/default_user.png';
+                }
+
+                mediaPonderadaP.textContent = media;
+                resultadoDiv.classList.remove('hidden');
+
+            } else {
+                nenhumResultadoDiv.classList.remove('hidden');
+            }
+        });
+
+        // Inicia o carregamento dos dados quando a página é carregada
+        fetchData();
+    });
+</script>
+
+</body>
+</html>

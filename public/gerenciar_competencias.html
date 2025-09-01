@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Competências e Grupos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-button">Voltar</a>
+    <h1>Gerenciar Competências e Grupos</h1>
+
+    <div class="form-section">
+        <h2>Criar Nova Competência</h2>
+        <form id="form-competencia">
+            <div class="form-group">
+                <label for="nome-competencia">Nome da Competência</label>
+                <input type="text" id="nome-competencia" name="nome-competencia" required>
+            </div>
+            <button type="submit">Salvar Competência</button>
+        </form>
+    </div>
+    
+    <hr>
+
+    <div class="form-section">
+        <h2>Criar Grupo de Competências</h2>
+        <form id="form-grupo">
+            <div class="form-group">
+                <label for="nome-grupo">Nome do Grupo</label>
+                <input type="text" id="nome-grupo" name="nome-grupo" required>
+            </div>
+
+            <div class="form-group">
+                <label>Selecione as Competências</label>
+                <div id="lista-competencias" class="competencias-checkbox">
+                    </div>
+            </div>
+
+            <button type="submit">Salvar Grupo</button>
+        </form>
+    </div>
+</div>
+
+    <div class="footer">
+        Product by <a href="https://www.linkedin.com/in/matheus-henrique-gpti/" target="_blank">DevFari</a>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const formCompetencia = document.getElementById('form-competencia');
+        const formGrupo = document.getElementById('form-grupo');
+        const listaCompetenciasDiv = document.getElementById('lista-competencias');
+        let competencias = [];
+
+        async function carregarCompetencias() {
+            try {
+                const response = await fetch('/competencias');
+                competencias = await response.json();
+                renderizarCompetencias();
+            } catch (error) {
+                console.error('Erro ao carregar competências:', error);
+                alert('Erro ao carregar a lista de competências. Verifique o servidor.');
+            }
+        }
+
+        function renderizarCompetencias() {
+            listaCompetenciasDiv.innerHTML = '';
+            competencias.forEach(comp => {
+                const label = document.createElement('label');
+                label.innerHTML = `<input type="checkbox" name="competencia" value="${comp.id}"> ${comp.nome}`;
+                listaCompetenciasDiv.appendChild(label);
+            });
+        }
+
+        formCompetencia.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const nomeCompetencia = document.getElementById('nome-competencia').value;
+            
+            try {
+                const response = await fetch('/salvar-competencia', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome: nomeCompetencia })
+                });
+
+                if (response.ok) {
+                    alert('Competência salva com sucesso!');
+                    formCompetencia.reset();
+                    await carregarCompetencias(); // Recarrega a lista para mostrar a nova competência
+                } else {
+                    const error = await response.text();
+                    alert('Erro ao salvar a competência: ' + error);
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro de conexão com o servidor.');
+            }
+        });
+
+        formGrupo.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const nomeGrupo = document.getElementById('nome-grupo').value;
+            const competenciasSelecionadas = Array.from(document.querySelectorAll('input[name="competencia"]:checked'))
+                                                  .map(checkbox => checkbox.value);
+            
+            if (competenciasSelecionadas.length === 0) {
+                alert('Selecione ao menos uma competência para o grupo.');
+                return;
+            }
+
+            const novoGrupo = {
+                grupo: nomeGrupo,
+                competencias: competenciasSelecionadas
+            };
+
+            try {
+                const response = await fetch('/salvar-grupo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(novoGrupo)
+                });
+
+                if (response.ok) {
+                    alert('Grupo salvo com sucesso!');
+                    formGrupo.reset();
+                    // Limpa os checkboxes
+                    document.querySelectorAll('input[name="competencia"]').forEach(cb => cb.checked = false);
+                } else {
+                    const error = await response.text();
+                    alert('Erro ao salvar o grupo: ' + error);
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro de conexão com o servidor.');
+            }
+        });
+
+        carregarCompetencias();
+    });
+</script>
+
+</body>
+</html>

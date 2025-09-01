@@ -7,13 +7,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <a href="index.html" class="back-button">Voltar</a>
-    
-    <div class="container">
 
+    <div class="container">
+        <a href="index.html" class="back-button">Voltar</a>
         <h1>Cadastro de Colaboradores</h1>
 
-        <form>
+        <form id="form-colaborador">
             <div class="form-group">
                 <label for="matricula">Matrícula</label>
                 <input type="text" id="matricula" name="matricula">
@@ -48,9 +47,13 @@
                 <input type="text" id="unidade" name="unidade">
             </div>
 
+            <div class="form-group">
+                <label for="foto">Foto do Colaborador</label>
+                <input type="file" id="foto" name="foto" accept="image/*">
+            </div>
+
             <button type="submit">Salvar</button>
         </form>
-
     </div>
 
     <div class="footer">
@@ -58,24 +61,18 @@
     </div>
 
     <script>
-        const formColaborador = document.querySelector('form');
+        const formColaborador = document.getElementById('form-colaborador');
 
         formColaborador.addEventListener('submit', async (event) => {
             event.preventDefault();
 
+            // Usamos FormData para enviar arquivos
             const formData = new FormData(formColaborador);
-            const colaborador = Object.fromEntries(formData.entries());
-
-            // Adiciona um ID único para o novo colaborador
-            colaborador.id = Date.now();
 
             try {
                 const response = await fetch('/salvar-colaborador', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(colaborador)
+                    body: formData // Não precisamos de headers, FormData já define o tipo correto
                 });
 
                 if (response.ok) {

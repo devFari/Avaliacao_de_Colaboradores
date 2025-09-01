@@ -8,87 +8,40 @@
 </head>
 <body>
 
-    <a href="index.html" class="back-button">Voltar</a>
-
     <div class="container">
-        
+        <a href="index.html" class="back-button">Voltar</a>
         <h1>Avaliação de Competências</h1>
 
-        <form>
+        <form id="form-avaliacao">
             <div class="form-group">
                 <label for="id_avaliacao">ID da Avaliação</label>
-                <input type="text" id="id_avaliacao" name="id_avaliacao" value="ID gerado automaticamente" class="readonly-field" readonly>
+                <input type="text" id="id_avaliacao" name="id_avaliacao" value="ID gerado automaticamente" disabled>
             </div>
 
             <div class="form-group">
                 <label for="avaliador">Avaliador</label>
-                <input type="text" id="avaliador" name="avaliador">
+                <input type="text" id="avaliador" name="avaliador" value="Ronei Bertol" required>
             </div>
 
             <div class="form-group">
-                <label for="matricula_colaborador">Matrícula Colaborador</label>
-                <input type="text" id="matricula_colaborador" name="matricula_colaborador">
+                <label for="matricula_colaborador">Matrícula do Colaborador</label>
+                <input type="text" id="matricula_colaborador" name="matricula_colaborador" required>
             </div>
 
             <div class="form-group">
                 <label for="ano_referencia">Ano de Referência</label>
-                <input type="text" id="ano_referencia" name="ano_referencia" placeholder="Ex: 2025" maxlength="4">
+                <input type="text" id="ano_referencia" name="ano_referencia" value="2025" required>
             </div>
-
+            
             <div class="form-group">
-                <label for="data_avaliacao">Data da Avaliação</label>
-                <input type="date" id="data_avaliacao" name="data_avaliacao">
-            </div>
-
-            <div class="form-group">
-                <label for="competencia_01">Competência 01</label>
-                <select id="competencia_01" name="competencia_01">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
+                <label for="grupo-competencias">Grupo de Competências</label>
+                <select id="grupo-competencias" name="grupo-competencias" required>
+                    <option value="" selected disabled>Selecione um grupo</option>
                 </select>
             </div>
-
-            <div class="form-group">
-                <label for="competencia_02">Competência 02</label>
-                <select id="competencia_02" name="competencia_02">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="competencia_03">Competência 03</label>
-                <select id="competencia_03" name="competencia_03">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="competencia_04">Competência 04</label>
-                <select id="competencia_04" name="competencia_04">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="competencia_05">Competência 05</label>
-                <select id="competencia_05" name="competencia_05">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-            </div>
+            
+            <div id="campos-competencias">
+                </div>
 
             <button type="submit">Salvar Avaliação</button>
         </form>
@@ -99,36 +52,105 @@
     </div>
 
     <script>
-        const formAvaliacao = document.querySelector('form');
+        document.addEventListener('DOMContentLoaded', async () => {
+            const formAvaliacao = document.getElementById('form-avaliacao');
+            const grupoCompetenciasSelect = document.getElementById('grupo-competencias');
+            const camposCompetenciasDiv = document.getElementById('campos-competencias');
+            
+            let grupos = [];
+            let competencias = [];
 
-        formAvaliacao.addEventListener('submit', async (event) => {
-            event.preventDefault();
+            async function carregarDados() {
+                try {
+                    const [gruposResponse, competenciasResponse] = await Promise.all([
+                        fetch('/grupos'),
+                        fetch('/competencias')
+                    ]);
+                    grupos = await gruposResponse.json();
+                    competencias = await competenciasResponse.json();
+                    preencherGrupos();
+                } catch (error) {
+                    console.error('Erro ao carregar dados:', error);
+                    alert('Erro ao carregar grupos e competências. Verifique o servidor.');
+                }
+            }
 
-            const formData = new FormData(formAvaliacao);
-            const avaliacao = Object.fromEntries(formData.entries());
+            function preencherGrupos() {
+                grupos.forEach(grupo => {
+                    const option = document.createElement('option');
+                    option.value = grupo.grupo;
+                    option.textContent = grupo.grupo;
+                    grupoCompetenciasSelect.appendChild(option);
+                });
+            }
 
-            // Adiciona um ID único para a nova avaliação
-            avaliacao.id = Date.now();
+            function gerarCamposCompetencias(nomeGrupo) {
+                camposCompetenciasDiv.innerHTML = '';
+                const grupoSelecionado = grupos.find(g => g.grupo === nomeGrupo);
 
-            try {
-                const response = await fetch('/salvar-avaliacao', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(avaliacao)
+                if (grupoSelecionado) {
+                    grupoSelecionado.competencias.forEach(compID => {
+                        const competencia = competencias.find(c => c.id === compID);
+                        if (competencia) {
+                            const formGroup = document.createElement('div');
+                            formGroup.className = 'form-group';
+                            formGroup.innerHTML = `
+                                <label for="${competencia.id}">${competencia.nome}</label>
+                                <select id="${competencia.id}" name="${competencia.id}" required>
+                                    <option value="" selected disabled>Selecione uma nota</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            `;
+                            camposCompetenciasDiv.appendChild(formGroup);
+                        }
+                    });
+                }
+            }
+
+            grupoCompetenciasSelect.addEventListener('change', (event) => {
+                gerarCamposCompetencias(event.target.value);
+            });
+
+            formAvaliacao.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const formData = new FormData(formAvaliacao);
+                const dadosAvaliacao = {};
+                formData.forEach((value, key) => {
+                    if (key !== 'id_avaliacao') {
+                        dadosAvaliacao[key] = value;
+                    }
                 });
 
-                if (response.ok) {
-                    alert('Avaliação salva com sucesso!');
-                    formAvaliacao.reset();
-                } else {
-                    alert('Erro ao salvar a avaliação.');
+                // Adiciona a data da avaliação
+                dadosAvaliacao.data_da_avaliacao = new Date().toLocaleDateString();
+
+                try {
+                    const response = await fetch('/salvar-avaliacao', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(dadosAvaliacao)
+                    });
+
+                    if (response.ok) {
+                        alert('Avaliação salva com sucesso!');
+                        formAvaliacao.reset();
+                        camposCompetenciasDiv.innerHTML = ''; // Limpa os campos gerados
+                    } else {
+                        const error = await response.text();
+                        alert('Erro ao salvar a avaliação: ' + error);
+                    }
+                } catch (error) {
+                    console.error('Erro:', error);
+                    alert('Erro de conexão com o servidor.');
                 }
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('Erro de conexão com o servidor.');
-            }
+            });
+
+            // Inicia o carregamento dos dados
+            carregarDados();
         });
     </script>
 

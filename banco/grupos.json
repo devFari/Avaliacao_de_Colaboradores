@@ -1,0 +1,18 @@
+[
+  {
+    "grupo": "Grupo Padrão",
+    "competencias": [
+      "comp01",
+      "comp02",
+      "comp03",
+      "comp04",
+      "comp05"
+    ]
+  },
+  {
+    "grupo": "TI",
+    "competencias": [
+      "comp06"
+    ]
+  }
+]

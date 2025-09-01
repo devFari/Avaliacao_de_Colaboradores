@@ -38,21 +38,26 @@
 
   <template id="modelo-card">
     <div class="card">
-        <div class="campo">
-            <p class="label">Colaborador</p>
-            <p class="valor colaborador"></p>
-        </div>
-        <div class="campo">
-            <p class="label">Avaliador</p>
-            <p class="valor avaliador"></p>
-        </div>
-        <div class="campo">
-            <p class="label">Ano</p>
-            <p class="valor ano"></p>
-        </div>
-        <div class="campo">
-            <p class="label">Data</p>
-            <p class="valor data"></p>
+        <div class="card-header">
+            <img class="foto-colaborador" src="" alt="Foto do Colaborador">
+            <div class="dados-basicos">
+                <div class="campo">
+                    <p class="label">Colaborador</p>
+                    <p class="valor colaborador"></p>
+                </div>
+                <div class="campo">
+                    <p class="label">Avaliador</p>
+                    <p class="valor avaliador"></p>
+                </div>
+                <div class="campo">
+                    <p class="label">Ano</p>
+                    <p class="valor ano"></p>
+                </div>
+                <div class="campo">
+                    <p class="label">Data</p>
+                    <p class="valor data"></p>
+                </div>
+            </div>
         </div>
         <hr>
         <div class="competencias-grid">
@@ -155,10 +160,10 @@
                     // Encontra o colaborador correspondente para obter nome, setor e unidade
                     const colaborador = colaboradores.find(c => c.matricula == avaliacao.matricula_colaborador);
                     const nomeColaborador = colaborador ? colaborador.nome_colaborador : 'Desconhecido';
-                    const setorColaborador = colaborador ? colaborador.setor : 'Desconhecido';
-                    const unidadeColaborador = colaborador ? colaborador.unidade : 'Desconhecido';
+                    const fotoColaborador = colaborador && colaborador.foto ? colaborador.foto : '/uploads/default_user.png';
 
                     // Preenche os dados do card
+                    card.querySelector('.foto-colaborador').src = fotoColaborador;
                     card.querySelector('.colaborador').textContent = nomeColaborador;
                     card.querySelector('.avaliador').textContent = avaliacao.avaliador;
                     card.querySelector('.ano').textContent = avaliacao.ano_referencia;
