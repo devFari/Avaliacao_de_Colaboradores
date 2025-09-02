@@ -1,140 +1,149 @@
-# 🏥 Mapa de Competências - Centro de Diagnósticos Lucilo Ávila
+# 📊 Sistema de Mapeamento de Competências
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JSON](https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white)
+![Open Source](https://img.shields.io/badge/Open_Source-3DA639?style=for-the-badge&logo=opensourceinitiative&logoColor=white)
 
 ## 📋 Sobre o Projeto
 
-Sistema interno desenvolvido para o **Centro de Diagnósticos Lucilo Ávila** que permite o mapeamento e avaliação de competências dos colaboradores através de uma interface web intuitiva.
+Sistema web open source para mapeamento e avaliação de competências de colaboradores. Desenvolvido para ser intuitivo e fácil de implementar em qualquer organização.
 
 **Funcionalidades principais:**
 - ✅ **Cadastro de colaboradores** com dados completos
-- ✅ **Sistema de avaliação** por competências (0-3)
+- ✅ **Sistema de avaliação** por competências (escala 0-3)
 - ✅ **Histórico visual** com filtros avançados
 - ✅ **Interface responsiva** e amigável
+- ✅ **Armazenamento em JSON** sem necessidade de banco de dados
 
 ## 🏗️ Estrutura do Projeto
 ```
-CDLA_Mapa_de_Competencia/
-├── 📁 banco/
-│ ├── 📄 avaliacoes.json # Armazena todas as avaliações
-│ └── 📄 colaboradores.json # Cadastro de colaboradores
+Mapa_de_Competencias/
+├── 📁 database/
+│ ├── 📄 evaluations.json # Armazena todas as avaliações
+│ └── 📄 employees.json # Cadastro de colaboradores
 │
-├── 📁 functions/ # Futuras funções do sistema
-│ └── 🔧 (em desenvolvimento)
-│
-├── 📁 public/ # Interface do usuário
+├── 📁 public/
 │ ├── 🌐 index.html # Menu principal
-│ ├── 👥 colaborador.html # Cadastro de colaboradores
-│ ├── 📊 avaliacao.html # Formulário de avaliação
-│ └── 📈 visualizar.html # Visualização de histórico
+│ ├── 👥 employee.html # Cadastro de colaboradores
+│ ├── 📊 evaluation.html # Formulário de avaliação
+│ └── 📈 view.html # Visualização de histórico
 │
-├── ⚙️ server.js # Servidor Node.js principal
-└── 🚀 start_server.bat # Inicializador do sistema
+├── 📁 src/
+│ └── 🔧 server.js # Servidor Node.js principal
+│
+├── ⚙️ package.json # Dependências do projeto
+└── 🚀 start_server.bat # Inicializador do sistema (Windows)
 ```
 
 
 ## 🎯 Telas do Sistema
 
-### 1. 🏠 Página Principal (`index.html`)
-- Menu de navegação com três opções:
-  - **Colaborador** → Cadastro de funcionários
-  - **Avaliação** → Formulário de competências
-  - **Histórico** → Visualização de avaliações
+### 1. 🏠 Página Principal
+- Menu de navegação intuitivo
+- Acesso rápido a todas as funcionalidades
+- Design limpo e profissional
 
-### 2. 👥 Cadastro de Colaboradores (`colaborador.html`)
-**Campos do formulário:**
-- Matrícula (texto)
-- Nome do colaborador (texto)
-- Condição (select: Ativo/Desligado)
-- Cargo (texto)
-- Setor (texto)
-- Unidade (texto)
+### 2. 👥 Cadastro de Colaboradores
+**Campos disponíveis:**
+- ID/Matrícula
+- Nome completo
+- Status (Ativo/Inativo)
+- Cargo/Função
+- Departamento/Setor
+- Unidade/Localidade
 
-**Funcionalidade:** Salva dados via POST em `/salvar-colaborador`
+### 3. 📊 Avaliação de Competências
+**Sistema de avaliação:**
+- 5 competências customizáveis
+- Escala de 0 a 3 pontos
+- Data e avaliador registrados
+- ID único automático
 
-### 3. 📊 Avaliação de Competências (`avaliacao.html`)
-**Campos do formulário:**
-- ID da Avaliação (automático, readonly)
-- Avaliador (texto)
-- Matrícula do Colaborador (texto)
-- Ano de Referência (texto, 4 dígitos)
-- Data da Avaliação (date)
-- 5 Competências (select: 0, 1, 2, 3)
-
-**Funcionalidade:** Salva avaliações via POST em `/salvar-avaliacao`
-
-### 4. 📈 Visualização de Histórico (`visualizar.html`)
+### 4. 📈 Visualização de Histórico
 **Sistema de filtros:**
-- Colaborador (texto)
-- Ano de Referência (texto)
-- Setor (texto)
-- Unidade (texto)
+- Por colaborador
+- Por período/anual
+- Por departamento
+- Por unidade
 
-**Exibição em cards com:**
-- Nome do colaborador
-- Nome do avaliador
-- Ano de referência
-- Data da avaliação
-- Notas das 5 competências
+**Visualização em cards:**
+- Dados completos da avaliação
+- Layout organizado
+- Fácil comparação
 
 ## 🛠️ Tecnologias Utilizadas
 
 - **Frontend:** HTML5, CSS3, JavaScript Vanilla
 - **Backend:** Node.js + Express
 - **Armazenamento:** JSON files
-- **Comunicação:** Fetch API + JSON
+- **Comunicação:** Fetch API
 
 ## ⚡ Como Executar
 
-### Método Simplificado:
-1. Execute o arquivo `start_server.bat`
-2. Acesse: `http://localhost:3000`
-3. Sistema pronto para uso
+### Pré-requisitos:
+- Node.js (versão 14 ou superior)
+- Navegador web moderno
 
-### Método Desenvolvimento:
-```
+### Instalação e execução:
 bash
-cd D:\REPOSITORIOS\CDLA_Mapa_de_Competencia
-node server.js
+```
+# Clone o repositório
+git clone <url-do-repositorio>
+
+# Acesse o diretório
+cd Mapa_de_Competencias
+
+# Instale as dependências
+npm install
+
+# Execute o servidor
+node src/server.js
+
+# Acesse no navegador
+# http://localhost:3000
 ```
 
-# 📊 Estrutura de Dados
-## colaboradores.json
+Para Windows:
+Execute o arquivo start_server.bat
+
+O sistema estará disponível em http://localhost:3000
+
+## 📊 Estrutura de Dados
+- employees.json
 ```
 {
-  "colaboradores": [
+  "employees": [
     {
       "id": 1736376283745,
-      "matricula": "12345",
-      "nome_colaborador": "João",
-      "condicao": "ativo",
-      "cargo": "Técnico em Radiologia",
-      "setor": "Imagem",
-      "unidade": "Centro"
+      "employee_id": "12345",
+      "name": "João Silva",
+      "status": "active",
+      "position": "Desenvolvedor",
+      "department": "TI",
+      "location": "Matriz"
     }
   ]
 }
 ```
-## avaliacoes.json
+- evaluations.json
 ```
 {
-  "avaliacoes": [
+  "evaluations": [
     {
       "id": 1736376354822,
-      "id_avaliacao": "ID gerado automaticamente",
-      "avaliador": "Maria Souza",
-      "matricula_colaborador": "12345",
-      "ano_referencia": "2025",
-      "data_avaliacao": "2025-01-15",
-      "competencia_01": "3",
-      "competencia_02": "2",
-      "competencia_03": "3",
-      "competencia_04": "1",
-      "competencia_05": "2"
+      "evaluation_id": "AUTO_GENERATED",
+      "evaluator": "Maria Souza",
+      "employee_id": "12345",
+      "reference_year": "2024",
+      "evaluation_date": "2024-01-15",
+      "competency_01": "3",
+      "competency_02": "2",
+      "competency_03": "3",
+      "competency_04": "1",
+      "competency_05": "2"
     }
   ]
 }
@@ -149,46 +158,70 @@ node server.js
 | `GET` | `/avaliacoes` | Retorna todas as avaliações cadastradas |
 | `GET` | `/colaboradores` | Retorna todos os colaboradores cadastrados |
 
-##👥 Público-Alvo
+## 🎨 Customização
+Personalizar competências:
+Edite o arquivo evaluation.html para alterar os nomes das competências:
+```
+<label for="competencia_01">Liderança</label>
+<label for="competencia_02">Comunicação</label>
+<label for="competencia_03">Técnica</label>
+```
+**Adicionar campos:**
+Modifique os formulários em employee.html e evaluation.html para incluir novos campos conforme necessidade.
 
-- Gestores e supervisores do CDLA
-- Coordenadores de departamento
-- Recursos Humanos
-- Líderes de equipe
+## 👥 Público-Alvo
 
-##🔒 Segurança e Privacidade
+Este sistema foi desenvolvido para atender às necessidades de:
 
-- Dados armazenados localmente na rede interna
-- Acesso restrito à rede da clínica
-- Informações confidenciais protegidas
-- Backup regular dos arquivos JSON
+- **Empresas de qualquer segmento** que necessitem de um sistema de avaliação de competências
+- **Departamentos de RH** para gestão do desenvolvimento de colaboradores
+- **Gestores e líderes de equipe** para acompanhamento do time
+- **Organizações** que precisam mapear e acompanhar competências técnicas e comportamentais
+
+## 🔒 Segurança e Privacidade
+
+- **📁 Dados armazenados localmente** - Total controle sobre as informações
+- **💾 Backup simplificado** - Arquivos JSON facilitam cópias de segurança
+- **🎯 Controle total** - Você gerencia todos os dados sem dependências externas
+- **🌐 Implementação interna** - Possibilidade de deploy em rede local segura
 
 ## 🚀 Próximas Melhorias
 
-- Sistema de login e autenticação
-- Relatórios em PDF
-- Dashboard gerencial
-- Gráficos de evolução
-- Módulo de metas e objetivos
+| Status | Funcionalidade | Descrição |
+|--------|----------------|-----------|
+| 📋 | **Sistema de autenticação** | Controle de acesso por usuários |
+| 📋 | **Relatórios em PDF** | Exportação de avaliações em PDF |
+| 📋 | **Dashboard analítico** | Visualização de métricas e indicadores |
+| 📋 | **Gráficos de evolução** | Análise temporal do desenvolvimento |
+| 📋 | **Módulo de metas** | Definição e acompanhamento de objetivos |
+| 📋 | **Exportação para Excel** | Integração com planilhas |
+| 📋 | **API REST completa** | Integração com outros sistemas |
 
-## 👨💻 Desenvolvimento e Suporte
+## 🤝 Como Contribuir
 
-### **Desenvolvido por:**
+Contribuições são bem-vindas! Siga estes passos:
+
+1. **🍴 Faça um Fork** do projeto
+2. **🌿 Crie uma Branch** para sua feature:  
+   `git checkout -b feature/AmazingFeature`
+3. **💾 Commit suas mudanças:**  
+   `git commit -m 'Add some AmazingFeature'`
+4. **📤 Push para a Branch:**  
+   `git push origin feature/AmazingFeature`
+5. **🔃 Abra um Pull Request**
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes completos.
+
+## 👨💻 Desenvolvido por
+
 **Matheus "DevFari" Henrique**  
 📧 [LinkedIn](https://www.linkedin.com/in/matheus-henrique-gpti/)  
-🏥 *Centro de Diagnósticos Lucilo Ávila - Departamento de TI*
-
-### **📞 Suporte Técnico:**
-Para reportar problemas, sugerir melhorias ou obter suporte:
-
-- **E-mail:** ti@luciloavila.com.br
-- **Responsável técnico:** Matheus Henrique - Analista de sistemas
+🐙 [GitHub](https://github.com/devFari)
 
 ---
 
-**Centro de Diagnósticos Lucilo Ávila**  
-*Excelência em Diagnóstico por Imagem desde 1985*
+**✨ Um projeto open source para a comunidade**
 
-🏥 **Compromisso com o desenvolvimento e qualidade de nossas equipes**
-
-*Sistema desenvolvido para uso interno - Versão 1.0 - Janeiro 2024*
+*Versão 1.0 - Setembro 2025*
