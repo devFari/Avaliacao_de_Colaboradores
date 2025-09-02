@@ -1,29 +1,3 @@
 [
-  {
-    "matricula": "001322",
-    "nome_colaborador": "Matheus Henrique do Nascimento Farias",
-    "condicao": "ativo",
-    "cargo": "Analista de TI",
-    "setor": "TI",
-    "unidade": "Matris",
-    "foto": "/uploads/001322.jpeg"
-  },
-  {
-    "matricula": "001333",
-    "nome_colaborador": "klayton",
-    "condicao": "ativo",
-    "cargo": "Analista de TI",
-    "setor": "TI",
-    "unidade": "Matris",
-    "foto": "/uploads/001333.png"
-  },
-  {
-    "matricula": "001335",
-    "nome_colaborador": "ssssss",
-    "condicao": "ativo",
-    "cargo": "assistente",
-    "setor": "recepção",
-    "unidade": "centro",
-    "foto": "/uploads/1335.png"
-  }
+  
 ]
