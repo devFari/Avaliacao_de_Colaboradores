@@ -112,41 +112,37 @@ Execute o arquivo start_server.bat
 O sistema estará disponível em http://localhost:3000
 
 ## 📊 Estrutura de Dados
-- employees.json
+- colaboradores.json
 ```
-{
-  "employees": [
-    {
-      "id": 1736376283745,
-      "employee_id": "12345",
-      "name": "João Silva",
-      "status": "active",
-      "position": "Desenvolvedor",
-      "department": "TI",
-      "location": "Matriz"
-    }
-  ]
-}
+[
+  {
+    "matricula": "000000",
+    "nome_colaborador": "José da silva",
+    "condicao": "ativo",
+    "cargo": "Cargo X",
+    "setor": "Setor X",
+    "unidade": "Matriz",
+    "foto": "/uploads/000000.jpeg"
+  }
+]
 ```
 - evaluations.json
 ```
-{
-  "evaluations": [
-    {
-      "id": 1736376354822,
-      "evaluation_id": "AUTO_GENERATED",
-      "evaluator": "Maria Souza",
-      "employee_id": "12345",
-      "reference_year": "2024",
-      "evaluation_date": "2024-01-15",
-      "competency_01": "3",
-      "competency_02": "2",
-      "competency_03": "3",
-      "competency_04": "1",
-      "competency_05": "2"
-    }
-  ]
-}
+[
+  {
+    "id_avaliacao": "ID gerado automaticamente",
+    "avaliador": "Nome_avaliador",
+    "matricula_colaborador": "000000",
+    "ano_referencia": "2025",
+    "data_avaliacao": "2025-07-29",
+    "competencia_01": "3",
+    "competencia_02": "2",
+    "competencia_03": "0",
+    "competencia_04": "0",
+    "competencia_05": "3",
+    "id": 1756734548191
+  }
+]
 ```
 
 ## 🔌 API Endpoints
