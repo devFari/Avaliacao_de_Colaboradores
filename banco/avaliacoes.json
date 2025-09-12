@@ -1,3 +1,15 @@
 [
-  
+  {
+    "id_avaliacao": "ID gerado automaticamente",
+    "avaliador": "Sr. X",
+    "matricula_colaborador": "000000",
+    "ano_referencia": "2025",
+    "data_avaliacao": "2025-09-02",
+    "competencia_01": "3",
+    "competencia_02": "2",
+    "competencia_03": "3",
+    "competencia_04": "3",
+    "competencia_05": "3",
+    "id": 1756816528567
+  }
 ]

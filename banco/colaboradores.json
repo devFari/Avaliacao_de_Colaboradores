@@ -1,3 +1,11 @@
 [
-  
+  {
+    "matricula": "000000",
+    "nome_colaborador": "Matheus Henrique do Nascimento Farias",
+    "condicao": "ativo",
+    "cargo": "Analista de TI",
+    "setor": "TI",
+    "unidade": "centro",
+    "foto": "/uploads/000000.jpeg"
+  }
 ]
